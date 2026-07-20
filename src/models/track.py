@@ -7,3 +7,4 @@ class Track:
     name: str
     number_of_laps: int
     base_lap_time: float
+    fuel_effect_per_lap: float
