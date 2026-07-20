@@ -2,6 +2,7 @@ from src.models.driver import Driver
 from src.models.track import Track
 from src.models.tyre import Tyre
 from src.simulation.race_simulator import RaceSimulator
+from src.strategy.race_strategy import Strategy
 
 
 driver = Driver(name="Max Verstappen",
@@ -19,6 +20,12 @@ tyre = Tyre(compound="Medium",
     base_pace=0,
     degradation_rate=0.08,
     cliff_lap=25,)
+
+strategy = Strategy(
+    starting_compound="Medium",
+    pit_laps=[25],
+    compounds=["Hard"]
+)
 
 simulator = RaceSimulator()
 
