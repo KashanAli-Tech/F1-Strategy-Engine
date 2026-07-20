@@ -12,7 +12,8 @@ driver = Driver(name="Max Verstappen",
 track = Track(name="Silverstone",
     number_of_laps=52,
     base_lap_time=90,
-    fuel_effect_per_lap=0.035,)
+    fuel_effect_per_lap=0.035,
+    tyre_wear_multiplier=1.15,)
 
 tyre = Tyre(compound="Medium",
     base_pace=0,
