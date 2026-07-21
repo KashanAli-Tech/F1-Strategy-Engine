@@ -17,6 +17,20 @@ class RaceSimulator:
         current_compound = tyre
         for lap in range(1, track.number_of_laps + 1):
 
+            # to check if pit stop happens this lap
+            for pit_stop in strategy.pit_stops:
+                if lap == pit_stop.lap:
+                    print(
+                            f"\nPIT STOP LAP {lap}: "
+                            f"Changing to {pit_stop.new_compound}"
+                        )
+
+                    total_time += pit_stop.pit_time_loss
+
+                    current_compound = Tyre(compound=pit_stop.new_compound, base_pace=0, degradation_rate=0.08, cliff_lap=25)
+
+                tyre_age = 0
+
             lap_time = self.lap_simulator.simulate_lap(driver, current_compound, track, tyre_age,)
 
             total_time += lap_time

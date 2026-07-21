@@ -3,6 +3,7 @@ from src.models.track import Track
 from src.models.tyre import Tyre
 from src.simulation.race_simulator import RaceSimulator
 from src.strategy.race_strategy import Strategy
+from src.strategy.pit_stop import PitStop
 
 
 driver = Driver(name="Max Verstappen",
@@ -23,15 +24,21 @@ tyre = Tyre(compound="Medium",
 
 strategy = Strategy(
     starting_compound="Medium",
-    pit_laps=[25],
-    compounds=["Hard"]
+    pit_stops=[
+        PitStop(
+            lap=25,
+            new_compound="Hard",
+            pit_time_loss=22.5
+        )
+    ]
 )
 
 simulator = RaceSimulator()
 
 total_time = simulator.simulate_race(driver,
     tyre,
-    track,)
+    track,
+    strategy,)
 
 print("\nRace Finished")
 print(f"Driver: {driver.name}")
