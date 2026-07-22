@@ -5,6 +5,7 @@ from src.strategy.race_strategy import Strategy
 from src.strategy.pit_stop import PitStop
 from src.models.tyre_factory import TyreFactory
 from src.strategy.strategy_evaluator import StrategyEvaluator
+from src.strategy.strategy_optimizer import StrategyOptimizer
 
 driver = Driver(name="Max Verstappen",
     pace=0.98,
@@ -19,48 +20,12 @@ track = Track(name="Silverstone",
 
 tyre = TyreFactory.create("Medium")
 
-strategies = [
-
-    Strategy(
-        starting_compound="Medium",
-        pit_stops=[
-            PitStop(
-                lap=25,
-                new_compound="Hard",
-                pit_time_loss=22.5
-            )
-        ]
-    ),
-
-    Strategy(
-        starting_compound="Soft",
-        pit_stops=[
-            PitStop(
-                lap=20,
-                new_compound="Medium",
-                pit_time_loss=22.5
-            )
-        ]
-    )
-]
-
-evaluator = StrategyEvaluator()
-
-results = evaluator.evaluate(
-    driver,
-    track,
-    strategies
-)
-
+optimizer = StrategyOptimizer()
+best_strategy, results = optimizer.optimise(driver, track)
 print("\nStrategy Results:")
 
 for strategy, time in results.items():
     print(f"{strategy}: {time:.3f}s")
-
-best = evaluator.find_best_strategy(results)
-
+    
 print("\nBest Strategy:")
-print(best)
-
-print("\nRace Finished")
-print(f"Driver: {driver.name}")
+print(best_strategy)
