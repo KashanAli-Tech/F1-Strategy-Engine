@@ -1,3 +1,5 @@
+import random
+
 from src.models.driver import Driver
 from src.models.tyre import Tyre
 from src.models.track import Track
@@ -20,9 +22,12 @@ class LapSimulator:
         tyre_effect = tyre.base_pace # tyre compound's starting performance
         degradation = (tyre.calculate_degradation(tyre_age, driver.tyre_management) * track.tyre_wear_multiplier)
 
+        random_variation = random.normalvariate(0, 0.15)
+
         total_lap_time = (lap_time
             + driver_effect
             + tyre_effect
-            + degradation)
+            + degradation
+            + random_variation)
 
         return total_lap_time
