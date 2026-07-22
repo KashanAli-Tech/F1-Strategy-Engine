@@ -3,6 +3,7 @@ from src.models.track import Track
 from src.models.tyre import Tyre
 from src.simulation.lap_simulator import LapSimulator
 from src.strategy.race_strategy import Strategy
+from src.models.tyre_factory import TyreFactory
 
 class RaceSimulator:
     # simulates a complete race
@@ -27,9 +28,9 @@ class RaceSimulator:
 
                     total_time += pit_stop.pit_time_loss
 
-                    current_compound = Tyre(compound=pit_stop.new_compound, base_pace=0, degradation_rate=0.08, cliff_lap=25)
+                    current_compound = TyreFactory.create(pit_stop.new_compound)
 
-                tyre_age = 0
+                    tyre_age = 0
 
             lap_time = self.lap_simulator.simulate_lap(driver, current_compound, track, tyre_age,)
 
