@@ -11,7 +11,7 @@ class RaceSimulator:
     def __init__(self):
         self.lap_simulator = LapSimulator()
 
-    def simulate_race(self, driver: Driver, tyre: Tyre, track: Track, strategy: Strategy, verbose: bool = True) -> float:
+    def simulate_race(self, driver: Driver, tyre: Tyre, track: Track, strategy: Strategy, environment, verbose: bool = True) -> float:
 
         total_time = 0.0 
         tyre_age = 0
@@ -34,6 +34,11 @@ class RaceSimulator:
                     tyre_age = 0
 
             lap_time = self.lap_simulator.simulate_lap(driver, current_compound, track, tyre_age,)
+
+            if environment.safety_car_lap == lap:
+                if verbose:
+                    print("SAFETY CAR DEPLOYED")
+                lap_time += 5
 
             total_time += lap_time
             tyre_age += 1
