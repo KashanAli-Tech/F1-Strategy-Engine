@@ -1,14 +1,14 @@
-from src.simulation.race_simulator import RaceSimulator
 from src.models.driver import Driver
 from src.models.track import Track
 from src.models.tyre_factory import TyreFactory
 from src.strategy.race_strategy import Strategy
+from src.simulation.monte_carlo import MonteCarloSimulator
 
 
 class StrategyEvaluator:
 
     def __init__(self):
-        self.simulator = RaceSimulator()
+        self.simulator = MonteCarloSimulator()
 
     def evaluate(self, driver: Driver, track: Track, strategies: list[Strategy]) -> dict:
         results = {}
@@ -16,7 +16,8 @@ class StrategyEvaluator:
         for strategy in strategies:
 
             starting_tyre = TyreFactory.create(strategy.starting_compound)
-            total_time = self.simulator.simulate_race(driver, starting_tyre, track,strategy, verbose=False)
+            result = self.simulator.simulate(driver, track, strategy, iterations=1000)
+            total_time = result["average_time"]
             strategy_name = self.format_strategy(strategy)
             results[strategy_name] = total_time
 

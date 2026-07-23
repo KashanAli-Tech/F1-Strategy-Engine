@@ -1,6 +1,5 @@
 from src.models.driver import Driver
 from src.models.track import Track
-from src.simulation.race_simulator import RaceSimulator
 from src.strategy.race_strategy import Strategy
 from src.strategy.pit_stop import PitStop
 from src.models.tyre_factory import TyreFactory
@@ -32,33 +31,19 @@ print(best_strategy)
 
 monte_carlo = MonteCarloSimulator()
 
-result = monte_carlo.simulate(
-    driver,
+result = monte_carlo.simulate(driver,
     track,
-    Strategy(
-        starting_compound="Medium",
+    Strategy(starting_compound="Medium",
         pit_stops=[
             PitStop(
                 lap=25,
                 new_compound="Hard",
-                pit_time_loss=22.5
-            )
-        ]
-    ),
+                pit_time_loss=22.5)]),
     iterations=1000
 )
 
 
 print("\nMonte Carlo Results:")
-
-print(
-    f"Average: {result['average_time']:.3f}s"
-)
-
-print(
-    f"Best: {result['best_time']:.3f}s"
-)
-
-print(
-    f"Worst: {result['worst_time']:.3f}s"
-)
+print(f"Average: {result['average_time']:.3f}s")
+print(f"Best: {result['best_time']:.3f}s")
+print(f"Worst: {result['worst_time']:.3f}s")
