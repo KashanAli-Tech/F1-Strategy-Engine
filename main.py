@@ -48,4 +48,5 @@ if __name__ == "__main__":
     print("\nMonte Carlo Results:")
     print(f"Average: {result['average_time']:.3f}s")
     print(f"Best: {result['best_time']:.3f}s")
-    print(f"Worst: {result['worst_time']:.3f}s")
+    print(f"Variation: {result['variation']:.3f}")
+    print(f"Consistency Score: {result['consistency_score']:.3f}")
