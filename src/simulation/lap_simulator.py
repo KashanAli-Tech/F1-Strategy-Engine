@@ -37,7 +37,7 @@ class LapSimulator:
             if random.random() < 0.7:
                 weather_effect = 0.8
 
-        random_variation = random.normalvariate(0, 0.15)
+        random_variation = random.normalvariate(0, (1 - driver.consistency) * 1.5)
 
         total_lap_time = (lap_time
             + driver_effect
