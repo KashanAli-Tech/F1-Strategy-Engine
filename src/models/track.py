@@ -9,3 +9,5 @@ class Track:
     base_lap_time: float
     fuel_effect_per_lap: float
     tyre_wear_multiplier: float
+    tyre_wear_multiplier: float
+    track_evolution_rate: float

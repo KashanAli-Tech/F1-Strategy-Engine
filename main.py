@@ -17,7 +17,8 @@ if __name__ == "__main__":
         number_of_laps=52,
         base_lap_time=90,
         fuel_effect_per_lap=0.035,
-        tyre_wear_multiplier=1.15,)
+        tyre_wear_multiplier=1.15,
+        track_evolution_rate=0.01,)
 
     tyre = TyreFactory.create("Medium")
 

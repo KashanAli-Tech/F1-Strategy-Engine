@@ -19,7 +19,8 @@ class LapSimulator:
         # calculates lap time
 
         fuel_effect = (track.number_of_laps - tyre_age) * track.fuel_effect_per_lap
-        lap_time = track.base_lap_time + fuel_effect
+        track_evolution = (track.number_of_laps - tyre_age) * track.track_evolution_rate
+        lap_time = (track.base_lap_time + fuel_effect - track_evolution)
         driver_effect = (1 - driver.pace) * 2 # driver's performance effect
         tyre_effect = tyre.base_pace # tyre compound's starting performance
         degradation = (tyre.calculate_degradation(tyre_age, driver.tyre_management) * track.tyre_wear_multiplier)
