@@ -1,6 +1,7 @@
 import random
 
 from src.models.race_environment import RaceEnvironment
+from src.models.weather import Weather
 
 class EnvironmentGenerator:
 
@@ -8,13 +9,13 @@ class EnvironmentGenerator:
         weather_roll = random.random()
 
         if weather_roll < 0.7:
-            weather = "Dry"
+            weather = Weather.DRY
 
         elif weather_roll < 0.9:
-            weather = "Light Rain"
+            weather = Weather.LIGHT_RAIN
 
         else:
-            weather = "Heavy Rain"
+            weather = Weather.HEAVY_RAIN
 
         safety_car_lap = None
 

@@ -33,7 +33,7 @@ class RaceSimulator:
 
                     tyre_age = 0
 
-            lap_time = self.lap_simulator.simulate_lap(driver, current_compound, track, tyre_age,)
+            lap_time = self.lap_simulator.simulate_lap(driver, current_compound, track, tyre_age, environment)
 
             if environment.safety_car_lap == lap:
                 if verbose:
