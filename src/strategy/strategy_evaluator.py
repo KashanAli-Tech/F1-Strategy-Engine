@@ -17,15 +17,13 @@ class StrategyEvaluator:
 
             starting_tyre = TyreFactory.create(strategy.starting_compound)
             result = self.simulator.simulate(driver, track, strategy, iterations=1000)
-            total_time = result["average_time"]
             strategy_name = self.format_strategy(strategy)
-            results[strategy_name] = total_time
-
+            results[strategy_name] = result
         return results
 
 
-    def find_best_strategy(self,results: dict):
-        return min(results, key=results.get)
+    def find_best_strategy(self, results: dict):
+        return min(results, key=lambda strategy: results[strategy]["average_time"])
 
 
     def format_strategy(self, strategy: Strategy) -> str:

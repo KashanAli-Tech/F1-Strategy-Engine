@@ -25,8 +25,13 @@ if __name__ == "__main__":
     best_strategy, results = optimizer.optimise(driver, track)
     print("\nStrategy Results:")
 
-    for strategy, time in results.items():
-        print(f"{strategy}: {time:.3f}s")
+    for strategy, analysis in results.items():
+
+        print(
+            f"{strategy}: "
+            f"{analysis['average_time']:.3f}s "
+            f"| Risk: {analysis['variation']:.3f}"
+        )
 
     print("\nBest Strategy:")
     print(best_strategy)
