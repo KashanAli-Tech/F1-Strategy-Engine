@@ -26,11 +26,24 @@ if __name__ == "__main__":
     best_strategy, results = optimizer.optimise(driver, track)
     print("\nStrategy Results:")
 
+    best_by_compound = {}
+
     for strategy, analysis in results.items():
-        
-        print(f"{strategy}: "
-              f"{analysis['average_time']:.3f}s "
-              f"| Risk: {analysis['variation']:.3f}")
+
+        # to remove pit lap from name to group strategies
+        base_strategy = strategy.split(" (Pit Lap")[0]
+
+        if (base_strategy not in best_by_compound or analysis["average_time"] < best_by_compound[base_strategy]["average_time"]):
+            best_by_compound[base_strategy] = {"strategy": strategy,
+                "average_time": analysis["average_time"],
+                "variation": analysis["variation"]}
+
+    print("\nBest Pit Window For Each Strategy:")
+
+    for name, result in best_by_compound.items():
+        print(f"{result['strategy']}: "
+            f"{result['average_time']:.3f}s "
+            f"| Risk: {result['variation']:.3f}")
 
     print("\nBest Strategy:")
     print(best_strategy)
