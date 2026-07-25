@@ -16,22 +16,26 @@ class RaceSimulator:
         total_time = 0.0 
         tyre_age = 0
         current_compound = tyre
+        current_weather = environment.weather
         for lap in range(1, track.number_of_laps + 1):
 
             # to check if pit stop happens this lap
             for pit_stop in strategy.pit_stops:
                 if lap == pit_stop.lap:
                     if verbose:
-                        print(
-                                f"\nPIT STOP LAP {lap}: "
-                                f"Changing to {pit_stop.new_compound}"
-                            )
+                        print(f"\nPIT STOP LAP {lap}: "
+                              f"Changing to {pit_stop.new_compound}")
 
                     total_time += pit_stop.pit_time_loss
-
                     current_compound = TyreFactory.create(pit_stop.new_compound)
-
                     tyre_age = 0
+            if (environment.weather_change_lap is not None and lap == environment.weather_change_lap):
+                current_weather = environment.new_weather
+
+                if verbose:
+                    print(f"\nWEATHER CHANGED TO {current_weather}")
+
+            environment.weather = current_weather        
 
             lap_time = self.lap_simulator.simulate_lap(driver, current_compound, track, tyre_age, environment)
 

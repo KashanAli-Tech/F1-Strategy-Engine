@@ -22,4 +22,22 @@ class EnvironmentGenerator:
         if random.random() < 0.25:
             safety_car_lap = random.randint(10, 45)
 
-        return RaceEnvironment(weather=weather, safety_car_lap=safety_car_lap)
+        weather_change_lap = None
+        new_weather = None
+
+        if random.random() < 0.30:
+            weather_change_lap = random.randint(15, 45)
+
+            if weather == Weather.DRY:
+                new_weather = random.choice([Weather.LIGHT_RAIN, Weather.HEAVY_RAIN])
+
+            elif weather == Weather.LIGHT_RAIN:
+                new_weather = random.choice([Weather.DRY, Weather.HEAVY_RAIN])
+
+            else:  
+                new_weather = Weather.LIGHT_RAIN
+
+        return RaceEnvironment(weather=weather,
+            safety_car_lap=safety_car_lap,
+            weather_change_lap=weather_change_lap,
+            new_weather=new_weather,)

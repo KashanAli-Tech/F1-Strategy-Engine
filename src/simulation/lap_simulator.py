@@ -27,8 +27,6 @@ class LapSimulator:
 
         weather_effect = 0
 
-        weather_effect = 0
-
         if environment.weather == Weather.LIGHT_RAIN:
             if random.random() < 0.3:
                 weather_effect = 0.3
