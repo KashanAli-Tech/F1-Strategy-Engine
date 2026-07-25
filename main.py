@@ -27,12 +27,10 @@ if __name__ == "__main__":
     print("\nStrategy Results:")
 
     for strategy, analysis in results.items():
-
-        print(
-            f"{strategy}: "
-            f"{analysis['average_time']:.3f}s "
-            f"| Risk: {analysis['variation']:.3f}"
-        )
+        
+        print(f"{strategy}: "
+              f"{analysis['average_time']:.3f}s "
+              f"| Risk: {analysis['variation']:.3f}")
 
     print("\nBest Strategy:")
     print(best_strategy)

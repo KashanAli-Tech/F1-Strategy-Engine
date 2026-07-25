@@ -30,6 +30,6 @@ class StrategyEvaluator:
         name = strategy.starting_compound
 
         for pit in strategy.pit_stops:
-            name += f" → {pit.new_compound}"
+            name += f" → {pit.new_compound} (Pit Lap {pit.lap})"
 
         return name

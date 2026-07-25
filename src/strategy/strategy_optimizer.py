@@ -15,6 +15,7 @@ class StrategyOptimizer:
 
     def generate_strategies(self) -> list[Strategy]:
         compounds = ["Soft", "Medium", "Hard"]
+        pit_laps = [15, 20, 25, 30]
         strategies = []
 
         for start in compounds:
@@ -24,15 +25,16 @@ class StrategyOptimizer:
                 if start == next_tyre:
                     continue
 
-                strategy = Strategy(starting_compound=start,
-                    pit_stops=[
-                        PitStop(
-                            lap=25,
-                            new_compound=next_tyre,
-                            pit_time_loss=22.5)]
-                )
+                for pit_lap in pit_laps:
+                    strategy = Strategy(starting_compound=start,
+                        pit_stops=[
+                            PitStop(
+                                lap=pit_lap,
+                                new_compound=next_tyre,
+                                pit_time_loss=22.5)]
+                    )
 
-                strategies.append(strategy)
+                    strategies.append(strategy)
 
         return strategies
 
@@ -40,5 +42,5 @@ class StrategyOptimizer:
     def optimise(self, driver: Driver, track: Track):
         strategies = self.generate_strategies()
         results = self.evaluator.evaluate(driver, track, strategies)
-        best_strategy, score = self.decision_engine.choose_best(results)
+        best_strategy, _ = self.decision_engine.choose_best(results)
         return best_strategy, results
