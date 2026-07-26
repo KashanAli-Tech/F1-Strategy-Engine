@@ -28,13 +28,27 @@ class LapSimulator:
         weather_effect = 0
 
         if environment.weather == Weather.LIGHT_RAIN:
-            if random.random() < 0.3:
-                weather_effect = 0.3
+
+            if tyre.compound == "Soft":
+                weather_effect = 1.5
+
+            elif tyre.compound == "Medium":
+                weather_effect = 1.0
+
+            elif tyre.compound == "Hard":
+                weather_effect = 0.8
 
 
         elif environment.weather == Weather.HEAVY_RAIN:
-            if random.random() < 0.7:
-                weather_effect = 0.8
+
+            if tyre.compound == "Soft":
+                weather_effect = 5.0
+
+            elif tyre.compound == "Medium":
+                weather_effect = 4.0
+
+            elif tyre.compound == "Hard":
+                weather_effect = 3.0
 
         random_variation = random.normalvariate(0, (1 - driver.consistency) * 1.5)
 
