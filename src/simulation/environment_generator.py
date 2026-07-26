@@ -26,31 +26,9 @@ class EnvironmentGenerator:
             return random.randint(10, 45)
 
         return None
-
-    def generate_weather_change(self, weather):
-
-        if random.random() >= 0.30:
-            return None, None
-
-        change_lap = random.randint(15, 45)
-
-        if weather == Weather.DRY:
-            new_weather = random.choice([Weather.LIGHT_RAIN, Weather.HEAVY_RAIN])
-
-        elif weather == Weather.LIGHT_RAIN:
-            new_weather = random.choice([Weather.DRY, Weather.HEAVY_RAIN])
-
-        else:
-            new_weather = Weather.LIGHT_RAIN
-
-        return change_lap, new_weather
-
+    
     def generate(self):
         weather = self.generate_weather()
         safety_car_lap = self.generate_safety_car()
-        weather_change_lap, new_weather = self.generate_weather_change(weather)
 
-        return RaceEnvironment(weather=weather,
-            safety_car_lap=safety_car_lap,
-            weather_change_lap=weather_change_lap,
-            new_weather=new_weather)
+        return RaceEnvironment(weather=weather, safety_car_lap=safety_car_lap)

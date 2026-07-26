@@ -1,15 +1,19 @@
+import random
+
 from src.models.driver import Driver
 from src.models.track import Track
 from src.models.tyre import Tyre
 from src.simulation.lap_simulator import LapSimulator
 from src.strategy.race_strategy import Strategy
 from src.models.tyre_factory import TyreFactory
+from src.models.weather_model import WeatherModel
 
 class RaceSimulator:
     # simulates a complete race
     
     def __init__(self):
         self.lap_simulator = LapSimulator()
+        self.weather_model = WeatherModel()
 
     def simulate_race(self, driver: Driver, tyre: Tyre, track: Track, strategy: Strategy, environment, verbose: bool = True) -> float:
 
@@ -29,8 +33,9 @@ class RaceSimulator:
                     total_time += pit_stop.pit_time_loss
                     current_compound = TyreFactory.create(pit_stop.new_compound)
                     tyre_age = 0
-            if (environment.weather_change_lap is not None and lap == environment.weather_change_lap):
-                current_weather = environment.new_weather
+
+            if random.random() < 0.10:
+                current_weather = self.weather_model.next_weather(current_weather)
 
                 if verbose:
                     print(f"\nWEATHER CHANGED TO {current_weather}")
