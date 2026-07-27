@@ -50,6 +50,22 @@ class LapSimulator:
             elif tyre.compound == "Hard":
                 weather_effect = 3.0
 
+        traffic_effect = 0
+
+        # traffic is more likely in the middle of the race so
+        race_progress = tyre_age / track.number_of_laps
+
+        if 0.15 < race_progress < 0.85:
+            traffic_roll = random.random()
+
+            
+            if traffic_roll < 0.20: # for light traffic
+                traffic_effect = random.uniform(0.2, 0.5)
+
+            
+            elif traffic_roll < 0.28: # for heavy traffic / DRS train especially at start
+                traffic_effect = random.uniform(0.6, 1.5)
+
         random_variation = random.normalvariate(0, (1 - driver.consistency) * 1.5)
 
         total_lap_time = (lap_time
@@ -57,6 +73,7 @@ class LapSimulator:
             + tyre_effect
             + degradation
             + weather_effect
+            + traffic_effect
             + random_variation)
 
         return total_lap_time
