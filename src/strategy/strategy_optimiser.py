@@ -25,13 +25,14 @@ class StrategyOptimiser:
                     continue
 
                 for pit_lap in pit_laps:
-                    strategies.append(Strategy(
-                            starting_compound=start,
-                            pit_stops=[
-                                PitStop(
-                                    lap=pit_lap,
-                                    new_compound=next_tyre,
-                                    pit_time_loss=22.5)]))
+                    strategy = Strategy(starting_compound=start,
+                                        pit_stops=[
+                                        PitStop(lap=pit_lap,
+                                        new_compound=next_tyre,
+                                        pit_time_loss=22.5)])
+                    
+                    if self.is_valid_strategy(strategy):
+                        strategies.append(strategy)
 
         # fro two stop strategy
         for start in compounds:
@@ -45,11 +46,11 @@ class StrategyOptimiser:
 
                     for pit1 in pit_laps:
                         for pit2 in pit_laps:
-                            if pit2 - pit1 < 12:
+                            if pit2 - pit1 < 10:
                                 continue
 
-                            strategies.append(
-                                Strategy(starting_compound=start,
+                            
+                            strategy = Strategy(starting_compound=start,
                                     pit_stops=[
                                         PitStop(lap=pit1,
                                             new_compound=tyre2,
@@ -57,7 +58,10 @@ class StrategyOptimiser:
 
                                         PitStop(lap=pit2,
                                             new_compound=tyre3,
-                                            pit_time_loss=22.5)]))
+                                            pit_time_loss=22.5)])
+
+                            if self.is_valid_strategy(strategy):
+                                strategies.append(strategy)
 
         return strategies
 
@@ -66,3 +70,23 @@ class StrategyOptimiser:
         results = self.evaluator.evaluate(driver, track, strategies)
         best_strategy, _ = self.decision_engine.choose_best(results)
         return best_strategy, results
+
+    def is_valid_strategy(self, strategy: Strategy) -> bool:
+
+        previous_lap = 0
+        previous_compound = strategy.starting_compound
+
+        for pit in strategy.pit_stops:
+
+            # cannot pit too soon after previous stop
+            if pit.lap - previous_lap < 12:
+                return False
+
+            # cannot use same compound twice in a row
+            if pit.new_compound == previous_compound:
+                return False
+
+            previous_lap = pit.lap
+            previous_compound = pit.new_compound
+
+        return True
