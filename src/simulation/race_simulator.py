@@ -30,7 +30,8 @@ class RaceSimulator:
                         print(f"\nPIT STOP LAP {lap}: "
                               f"Changing to {pit_stop.new_compound}")
 
-                    total_time += pit_stop.pit_time_loss
+                    pit_time = random.normalvariate(pit_stop.pit_time_loss,1.2)
+                    total_time += pit_time
                     current_compound = TyreFactory.create(pit_stop.new_compound)
                     tyre_age = 0
 
