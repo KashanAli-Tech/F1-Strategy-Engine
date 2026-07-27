@@ -3,7 +3,7 @@ from src.models.track import Track
 from src.strategy.race_strategy import Strategy
 from src.strategy.pit_stop import PitStop
 from src.models.tyre_factory import TyreFactory
-from src.strategy.strategy_optimizer import StrategyOptimizer
+from src.strategy.strategy_optimiser import StrategyOptimiser
 from src.simulation.monte_carlo import MonteCarloSimulator
 
 if __name__ == "__main__":
@@ -14,7 +14,7 @@ if __name__ == "__main__":
         tyre_management=0.95,)
 
     track = Track(name="Silverstone",
-        number_of_laps=52,
+        number_of_laps=70,
         base_lap_time=90,
         fuel_effect_per_lap=0.035,
         tyre_wear_multiplier=1.15,
@@ -22,28 +22,25 @@ if __name__ == "__main__":
 
     tyre = TyreFactory.create("Medium")
 
-    optimizer = StrategyOptimizer()
-    best_strategy, results = optimizer.optimise(driver, track)
-    print("\nStrategy Results:")
+    optimiser = StrategyOptimiser()
+    best_strategy, results = optimiser.optimise(driver, track)
+    print("\nBest Pit Window For Each Strategy:\n")
 
-    best_by_compound = {}
-
+    best_by_strategy = {}
     for strategy, analysis in results.items():
 
-        # to remove pit lap from name to group strategies
         base_strategy = strategy.split(" (Pit Lap")[0]
 
-        if (base_strategy not in best_by_compound or analysis["average_time"] < best_by_compound[base_strategy]["average_time"]):
-            best_by_compound[base_strategy] = {"strategy": strategy,
+        if (base_strategy not in best_by_strategy or analysis["average_time"] < best_by_strategy[base_strategy]["average_time"]):
+            best_by_strategy[base_strategy] = {"strategy": strategy,
                 "average_time": analysis["average_time"],
                 "variation": analysis["variation"]}
 
-    print("\nBest Pit Window For Each Strategy:")
+    for name, result in best_by_strategy.items():
 
-    for name, result in best_by_compound.items():
         print(f"{result['strategy']}: "
-            f"{result['average_time']:.3f}s "
-            f"| Risk: {result['variation']:.3f}")
+              f"{result['average_time']:.3f}s "
+              f"| Risk: {result['variation']:.3f}")
 
     print("\nBest Strategy:")
     print(best_strategy)
