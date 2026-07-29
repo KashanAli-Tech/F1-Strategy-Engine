@@ -4,6 +4,7 @@ from src.models.driver import Driver
 from src.models.tyre import Tyre
 from src.models.track import Track
 from src.models.weather import Weather
+from configs.simulation_config import LAP_TIME_RANDOMNESS_MULTIPLIER, HEAVY_TRAFFIC, LIGHT_TRAFFIC
 
 
 class LapSimulator:
@@ -59,14 +60,14 @@ class LapSimulator:
             traffic_roll = random.random()
 
             
-            if traffic_roll < 0.20: # for light traffic
+            if traffic_roll < LIGHT_TRAFFIC: 
                 traffic_effect = random.uniform(0.2, 0.5)
 
             
-            elif traffic_roll < 0.28: # for heavy traffic / DRS train especially at start
+            elif traffic_roll < HEAVY_TRAFFIC:
                 traffic_effect = random.uniform(0.6, 1.5)
 
-        random_variation = random.normalvariate(0, (1 - driver.consistency) * 1.5)
+        random_variation = random.normalvariate(0, (1 - driver.consistency) * LAP_TIME_RANDOMNESS_MULTIPLIER)
 
         total_lap_time = (lap_time
             + driver_effect

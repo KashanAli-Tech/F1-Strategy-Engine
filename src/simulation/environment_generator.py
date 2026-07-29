@@ -2,19 +2,15 @@ import random
 
 from src.models.race_environment import RaceEnvironment
 from src.models.weather import Weather
+from configs.simulation_config import SAFETY_CAR_PROBABILITY, SAFETY_CAR_MIN_LAP, SAFETY_CAR_MAX_LAP, INITIAL_WEATHER_PROBABILITIES, WEATHER_CHANGE_PROBABILITY
 
 class EnvironmentGenerator:
-
-    WEATHER_PROBABILITIES = {Weather.DRY: 0.7,
-        Weather.LIGHT_RAIN: 0.25,
-        Weather.HEAVY_RAIN: 0.05}
-
 
     def generate_weather(self):
         roll = random.random()
         cumulative = 0
 
-        for weather, probability in self.WEATHER_PROBABILITIES.items():
+        for weather, probability in INITIAL_WEATHER_PROBABILITIES.items():
             cumulative += probability
 
             if roll <= cumulative:
@@ -22,8 +18,8 @@ class EnvironmentGenerator:
 
     def generate_safety_car(self):
 
-        if random.random() < 0.25:
-            return random.randint(10, 45)
+        if random.random() < SAFETY_CAR_PROBABILITY:
+            return random.randint(SAFETY_CAR_MIN_LAP, SAFETY_CAR_MAX_LAP)
 
         return None
     
