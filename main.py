@@ -5,6 +5,9 @@ from src.strategy.pit_stop import PitStop
 from src.models.tyre_factory import TyreFactory
 from src.strategy.strategy_optimiser import StrategyOptimiser
 from src.simulation.monte_carlo import MonteCarloSimulator
+from src.data.fastf1_loader import FastF1Loader
+from src.data.lap_extractor import LapExtractor
+from src.data.parameter_estimator import ParameterEstimator
 
 if __name__ == "__main__":
 
@@ -44,6 +47,27 @@ if __name__ == "__main__":
 
     print("\nBest Strategy:")
     print(best_strategy)
+
+    loader = FastF1Loader()
+
+    session = loader.load_race(2024, "British Grand Prix")
+    extractor = LapExtractor()
+    laps = extractor.extract_driver_laps(session, "VER")
+    estimator = ParameterEstimator()
+
+    print()
+    print("Historical Data")
+    print("----------------")
+    print("Average Lap:",
+        estimator.estimate_average_pace(laps))
+
+    print("Fastest Lap:",
+        estimator.estimate_fastest_lap(laps))
+
+    print("Stints:",
+        estimator.estimate_stint_lengths(laps))
+
+    print()
 
     monte_carlo = MonteCarloSimulator()
 
