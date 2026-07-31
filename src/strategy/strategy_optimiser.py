@@ -5,6 +5,8 @@ from src.models.driver import Driver
 from src.models.track import Track
 from src.strategy.decision_engine import DecisionEngine
 from src.simulation.monte_carlo  import MonteCarloSimulator
+from configs import FAST_OPTIMISATION_SIMULATIONS, FINAL_OPTIMISATION_SIMULATIONS, TOP_STRATEGIES_TO_VALIDATE
+
 
 
 class StrategyOptimiser:
@@ -71,9 +73,9 @@ class StrategyOptimiser:
         strategies = self.generate_strategies(track)
 
         # fast screening
-        fast_results = self.evaluator.evaluate(driver,track,strategies)
+        fast_results = self.evaluator.evaluate(driver,track,strategies, iterations=FAST_OPTIMISATION_SIMULATIONS)
         ranked_strategies = sorted(fast_results,key=lambda x: self.decision_engine.calculate_score(x[1]))
-        finalists = [strategy for strategy, result in ranked_strategies[:10]]
+        finalists = [strategy for strategy, result in ranked_strategies[:TOP_STRATEGIES_TO_VALIDATE]]
 
 
         # then accurate evaluation
@@ -81,13 +83,10 @@ class StrategyOptimiser:
 
         for strategy in finalists:
 
-            result = self.simulator.simulate(driver, track, strategy, iterations=1000)
+            result = self.simulator.simulate(driver, track, strategy, iterations=FINAL_OPTIMISATION_SIMULATIONS)
             final_results.append((strategy, result))
 
-        best_strategy = min(
-    final_results,
-    key=lambda x: self.decision_engine.calculate_score(x[1])
-)[0]
+        best_strategy = min(final_results, key=lambda x: self.decision_engine.calculate_score(x[1]))[0]
         return best_strategy, final_results
 
     def is_valid_strategy(self, strategy: Strategy) -> bool:

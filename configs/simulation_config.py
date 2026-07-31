@@ -3,6 +3,7 @@ from src.models.weather import Weather
 # monte carlo
 DEFAULT_SIMULATIONS = 1000
 
+
 # pit stops
 PIT_STOP_STD = 1.2
 
@@ -23,4 +24,8 @@ WEATHER_CHANGE_PROBABILITY = 0.10
 # randomness
 LAP_TIME_RANDOMNESS_MULTIPLIER = 1.5
 
+# strategy optimisation settings
+FAST_OPTIMISATION_SIMULATIONS = 200
+FINAL_OPTIMISATION_SIMULATIONS = 1000
+TOP_STRATEGIES_TO_VALIDATE = 10
 
