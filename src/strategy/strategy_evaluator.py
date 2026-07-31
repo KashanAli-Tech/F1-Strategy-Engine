@@ -10,15 +10,21 @@ class StrategyEvaluator:
     def __init__(self):
         self.simulator = MonteCarloSimulator()
 
-    def evaluate(self, driver: Driver, track: Track, strategies: list[Strategy]) -> dict:
-        results = {}
+    def evaluate(self, driver: Driver, track: Track, strategies: list[Strategy], iterations=200) -> list:
+
+        results = []
 
         for strategy in strategies:
 
-            starting_tyre = TyreFactory.create(strategy.starting_compound)
-            result = self.simulator.simulate(driver, track, strategy, iterations=200)
-            strategy_name = self.format_strategy(strategy)
-            results[strategy_name] = result
+            result = self.simulator.simulate(
+                driver,
+                track,
+                strategy,
+                iterations=iterations
+            )
+
+            results.append((strategy, result))
+
         return results
 
 

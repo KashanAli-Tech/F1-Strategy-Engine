@@ -17,7 +17,7 @@ if __name__ == "__main__":
         tyre_management=0.95,)
 
     track = Track(name="Silverstone",
-        number_of_laps=70,
+        number_of_laps=50,
         base_lap_time=90,
         fuel_effect_per_lap=0.035,
         tyre_wear_multiplier=1.15,
@@ -41,12 +41,12 @@ if __name__ == "__main__":
     print("\nBest Pit Window For Each Strategy:\n")
     best_by_strategy = {}
 
-    for strategy, analysis in results.items():
+    for strategy, analysis in results:
 
-        base_strategy = strategy.split(" (Pit Lap")[0]
+        base_strategy = optimiser.evaluator.format_strategy(strategy).split(" (Pit Lap")[0]
 
         if (base_strategy not in best_by_strategy or analysis["average_time"] < best_by_strategy[base_strategy]["average_time"]):
-            best_by_strategy[base_strategy] = {"strategy": strategy,
+            best_by_strategy[base_strategy] = {"strategy": optimiser.evaluator.format_strategy(strategy),
                 "average_time": analysis["average_time"],
                 "variation": analysis["variation"]}
 
@@ -57,8 +57,7 @@ if __name__ == "__main__":
             f"| Risk: {result['variation']:.3f}")
 
     print("\nBest Strategy:")
-    print(best_strategy)
-
+    print(optimiser.evaluator.format_strategy(best_strategy))
 
     print("\nHistorical Data")
     print("Average Lap:", estimator.estimate_average_pace(laps))
