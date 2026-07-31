@@ -69,7 +69,16 @@ if __name__ == "__main__":
     monte_carlo = MonteCarloSimulator()
     result = monte_carlo.simulate(driver,
         track,
-        best_strategy,
+        Strategy(
+        starting_compound="Medium",
+        pit_stops=[
+            PitStop(
+                lap=25,
+                new_compound="Hard",
+                pit_time_loss=22.5
+            )
+        ]
+    ),
         iterations=1000,
         verbose=True)
 
