@@ -11,3 +11,4 @@ class Track:
     tyre_wear_multiplier: float
     tyre_wear_multiplier: float
     track_evolution_rate: float
+    typical_stint: float = 0
