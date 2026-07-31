@@ -15,7 +15,7 @@ class StrategyOptimiser:
 
     def generate_strategies(self, track: Track) -> list[Strategy]:
         compounds = ["Soft", "Medium", "Hard"]
-        pit_laps = range(12, track.number_of_laps - 10, 10)        
+        pit_laps = range(20, track.number_of_laps - 15, 15)   
         strategies = []
 
         # for one stop strategy

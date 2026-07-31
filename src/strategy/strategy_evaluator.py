@@ -16,7 +16,7 @@ class StrategyEvaluator:
         for strategy in strategies:
 
             starting_tyre = TyreFactory.create(strategy.starting_compound)
-            result = self.simulator.simulate(driver, track, strategy, iterations=1000)
+            result = self.simulator.simulate(driver, track, strategy, iterations=200)
             strategy_name = self.format_strategy(strategy)
             results[strategy_name] = result
         return results
