@@ -2,12 +2,12 @@ from src.models.driver import Driver
 from src.models.track import Track
 from src.strategy.race_strategy import Strategy
 from src.strategy.pit_stop import PitStop
-from src.models.tyre_factory import TyreFactory
 from src.strategy.strategy_optimiser import StrategyOptimiser
 from src.simulation.monte_carlo import MonteCarloSimulator
 from src.data.fastf1_loader import FastF1Loader
 from src.data.lap_extractor import LapExtractor
 from src.data.parameter_estimator import ParameterEstimator
+from src.data.calibrator import ParameterCalibrator
 
 if __name__ == "__main__":
 
@@ -23,13 +23,24 @@ if __name__ == "__main__":
         tyre_wear_multiplier=1.15,
         track_evolution_rate=0.01,)
 
-    tyre = TyreFactory.create("Medium")
 
+    loader = FastF1Loader()
+    session = loader.load_race(2024, "British Grand Prix")
+    extractor = LapExtractor()
+    laps = extractor.extract_driver_laps(session, "VER")
+    estimator = ParameterEstimator()
+    calibrator = ParameterCalibrator()
+    track = calibrator.calibrate_track(track, estimator, laps)
+
+    print("\nCalibrated Track: ")
+    print(f"Base Lap Time: {track.base_lap_time:.3f}s")
+
+    # strategy optimisation stuff
     optimiser = StrategyOptimiser()
     best_strategy, results = optimiser.optimise(driver, track)
     print("\nBest Pit Window For Each Strategy:\n")
-
     best_by_strategy = {}
+
     for strategy, analysis in results.items():
 
         base_strategy = strategy.split(" (Pit Lap")[0]
@@ -42,44 +53,24 @@ if __name__ == "__main__":
     for name, result in best_by_strategy.items():
 
         print(f"{result['strategy']}: "
-              f"{result['average_time']:.3f}s "
-              f"| Risk: {result['variation']:.3f}")
+            f"{result['average_time']:.3f}s "
+            f"| Risk: {result['variation']:.3f}")
 
     print("\nBest Strategy:")
     print(best_strategy)
 
-    loader = FastF1Loader()
 
-    session = loader.load_race(2024, "British Grand Prix")
-    extractor = LapExtractor()
-    laps = extractor.extract_driver_laps(session, "VER")
-    estimator = ParameterEstimator()
+    print("\nHistorical Data")
+    print("Average Lap:", estimator.estimate_average_pace(laps))
+    print("Fastest Lap:", estimator.estimate_fastest_lap(laps))
+    print("Stints:", estimator.estimate_stint_lengths(laps))
 
-    print()
-    print("Historical Data")
-    print("----------------")
-    print("Average Lap:",
-        estimator.estimate_average_pace(laps))
-
-    print("Fastest Lap:",
-        estimator.estimate_fastest_lap(laps))
-
-    print("Stints:",
-        estimator.estimate_stint_lengths(laps))
-
-    print()
-
+    # monte carlo stuff
     monte_carlo = MonteCarloSimulator()
-
     result = monte_carlo.simulate(driver,
         track,
-        Strategy(starting_compound="Medium",
-            pit_stops=[
-                PitStop(
-                    lap=25,
-                    new_compound="Hard",
-                    pit_time_loss=22.5)]),
-        iterations=1000, 
+        best_strategy,
+        iterations=1000,
         verbose=True)
 
 
