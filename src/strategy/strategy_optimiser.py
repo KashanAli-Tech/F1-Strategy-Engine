@@ -5,7 +5,7 @@ from src.models.driver import Driver
 from src.models.track import Track
 from src.strategy.decision_engine import DecisionEngine
 from src.simulation.monte_carlo  import MonteCarloSimulator
-from configs import FAST_OPTIMISATION_SIMULATIONS, FINAL_OPTIMISATION_SIMULATIONS, TOP_STRATEGIES_TO_VALIDATE
+from configs.simulation_config import FAST_OPTIMISATION_SIMULATIONS, FINAL_OPTIMISATION_SIMULATIONS, TOP_STRATEGIES_TO_VALIDATE
 
 
 

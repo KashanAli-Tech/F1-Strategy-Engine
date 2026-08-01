@@ -8,6 +8,7 @@ from src.data.fastf1_loader import FastF1Loader
 from src.data.lap_extractor import LapExtractor
 from src.data.parameter_estimator import ParameterEstimator
 from src.data.calibrator import ParameterCalibrator
+from src.data.tyre_estimator import TyreEstimator
 
 if __name__ == "__main__":
 
@@ -28,6 +29,15 @@ if __name__ == "__main__":
     session = loader.load_race(2024, "British Grand Prix")
     extractor = LapExtractor()
     laps = extractor.extract_driver_laps(session, "VER")
+
+    tyre_estimator = TyreEstimator()
+    degradation = tyre_estimator.estimate_degradation(laps)
+
+    print("\nTyre Degradation:")
+
+    for compound, rate in degradation.items():
+        print(f"{compound}: {rate:.4f}s/lap")
+        
     estimator = ParameterEstimator()
     calibrator = ParameterCalibrator()
     track = calibrator.calibrate_track(track, estimator, laps)
