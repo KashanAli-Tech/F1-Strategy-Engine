@@ -16,6 +16,7 @@ class TyreEstimator:
             lap_times = (tyre_laps["LapTime"].dt.total_seconds().values)
             lap_numbers = np.arange(len(lap_times))
             slope, _ = np.polyfit(lap_numbers, lap_times, 1)
-            degradation_rates[compound] = slope
+            if slope > 0:
+                degradation_rates[compound] = slope
 
         return degradation_rates
