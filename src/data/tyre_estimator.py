@@ -1,22 +1,37 @@
-import numpy as np
-
-
 class TyreEstimator:
 
     def estimate_degradation(self, laps):
-        degradation_rates = {}
 
-        for compound in laps["Compound"].unique():
+        degradation = {}
+        compounds = ["SOFT", "MEDIUM", "HARD"]
 
-            tyre_laps = laps[laps["Compound"] == compound]
+        for compound in compounds:
 
-            if len(tyre_laps) < 5:
+            compound_laps = laps[laps["Compound"] == compound]
+
+            if len(compound_laps) < 5:
                 continue
 
-            lap_times = (tyre_laps["LapTime"].dt.total_seconds().values)
-            lap_numbers = np.arange(len(lap_times))
-            slope, _ = np.polyfit(lap_numbers, lap_times, 1)
-            if slope > 0:
-                degradation_rates[compound] = slope
+            compound_laps = compound_laps.copy()
+            compound_laps["LapSeconds"] = (
+                compound_laps["LapTime"]
+                .dt.total_seconds()
+            )
 
-        return degradation_rates
+            first_lap = compound_laps["LapSeconds"].iloc[0]
+
+            last_lap = compound_laps["LapSeconds"].iloc[-1]
+
+            lap_numbers = compound_laps["LapNumber"]
+            lap_times = compound_laps["LapSeconds"]
+
+            slope = (
+                (lap_times.iloc[-1] - lap_times.iloc[0]) /
+                (lap_numbers.iloc[-1] - lap_numbers.iloc[0])
+            )
+
+            rate = max(slope, 0)
+
+            degradation[compound] = rate
+
+        return degradation

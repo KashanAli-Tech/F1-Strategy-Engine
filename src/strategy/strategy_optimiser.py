@@ -11,8 +11,8 @@ from configs.simulation_config import FAST_OPTIMISATION_SIMULATIONS, FINAL_OPTIM
 
 class StrategyOptimiser:
 
-    def __init__(self):
-        self.evaluator = StrategyEvaluator()
+    def __init__(self, degradation_rates=None):
+        self.evaluator = StrategyEvaluator(degradation_rates)
         self.decision_engine = DecisionEngine(risk_factor=1.0)
         self.simulator = MonteCarloSimulator()
 
