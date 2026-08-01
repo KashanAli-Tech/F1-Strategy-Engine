@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     for compound, rate in degradation.items():
         print(f"{compound}: {rate:.4f}s/lap")
-        
+
     estimator = ParameterEstimator()
     calibrator = ParameterCalibrator()
     track = calibrator.calibrate_track(track, estimator, laps)
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     print(f"Base Lap Time: {track.base_lap_time:.3f}s")
 
     # strategy optimisation stuff
-    optimiser = StrategyOptimiser()
+    optimiser = StrategyOptimiser(degradation)
     best_strategy, results = optimiser.optimise(driver, track)
     print("\nBest Pit Window For Each Strategy:\n")
     best_by_strategy = {}
@@ -89,7 +89,8 @@ if __name__ == "__main__":
         ]
     ),
         iterations=1000,
-        verbose=True)
+        verbose=True,
+        degradation_rates=degradation)
 
 
     print("\nMonte Carlo Results:")

@@ -7,8 +7,9 @@ from src.simulation.monte_carlo import MonteCarloSimulator
 
 class StrategyEvaluator:
 
-    def __init__(self):
+    def __init__(self, degradation_rates=None):
         self.simulator = MonteCarloSimulator()
+        self.degradation_rates = degradation_rates
 
     def evaluate(self, driver: Driver, track: Track, strategies: list[Strategy], iterations=200) -> list:
 
@@ -20,7 +21,8 @@ class StrategyEvaluator:
                 driver,
                 track,
                 strategy,
-                iterations=iterations
+                iterations=iterations,
+                degradation_rates=self.degradation_rates
             )
 
             results.append((strategy, result))
