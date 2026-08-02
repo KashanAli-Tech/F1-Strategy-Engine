@@ -8,7 +8,8 @@ from src.data.parameter_estimator import ParameterEstimator
 from src.data.calibrator import ParameterCalibrator
 from src.data.tyre_estimator import TyreEstimator
 from src.data.historical_loader import HistoricalLoader
-from src.evaluation.backtester import Backtester
+from src.backtesting.backtester import Backtester
+from src.backtesting.backtesting_evaluator import BackTestedStrategyEvaluator
 
 if __name__ == "__main__":
 
@@ -98,3 +99,13 @@ if __name__ == "__main__":
     print(f"Best: {result['best_time']:.3f}s")
     print(f"Variation: {result['variation']:.3f}")
     print(f"Consistency Score: {result['consistency_score']:.3f}")
+
+    backtester = Backtester(historical_loader, monte_carlo, optimiser)
+    results = backtester.run_race(year=2024, event="British Grand Prix")
+    evaluator = BackTestedStrategyEvaluator()
+    evaluation = evaluator.evaluate(results)
+    print("\nBacktest Results")
+    print(f"Predicted Strategy: {evaluation['predicted_strategy']}")
+    print(f"Closest Actual Strategy: {evaluation['actual_closest']}")
+    print(f"Prediction Error: {evaluation['error']} seconds")
+    
