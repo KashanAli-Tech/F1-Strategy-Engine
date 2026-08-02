@@ -8,6 +8,7 @@ from src.data.parameter_estimator import ParameterEstimator
 from src.data.calibrator import ParameterCalibrator
 from src.data.tyre_estimator import TyreEstimator
 from src.data.historical_loader import HistoricalLoader
+from src.evaluation.backtester import Backtester
 
 if __name__ == "__main__":
 
