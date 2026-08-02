@@ -4,11 +4,10 @@ from src.strategy.race_strategy import Strategy
 from src.strategy.pit_stop import PitStop
 from src.strategy.strategy_optimiser import StrategyOptimiser
 from src.simulation.monte_carlo import MonteCarloSimulator
-from src.data.fastf1_loader import FastF1Loader
-from src.data.lap_extractor import LapExtractor
 from src.data.parameter_estimator import ParameterEstimator
 from src.data.calibrator import ParameterCalibrator
 from src.data.tyre_estimator import TyreEstimator
+from src.data.historical_loader import HistoricalLoader
 
 if __name__ == "__main__":
 
@@ -25,11 +24,11 @@ if __name__ == "__main__":
         track_evolution_rate=0.01,)
 
 
-    loader = FastF1Loader()
-    session = loader.load_race(2024, "British Grand Prix")
-    extractor = LapExtractor()
-    laps = extractor.extract_driver_laps(session, "VER")
+    historical_loader = HistoricalLoader()
 
+    laps = historical_loader.load(years=[2022, 2023, 2024],
+        race_name="British Grand Prix",
+        driver="VER")
     tyre_estimator = TyreEstimator()
     degradation = tyre_estimator.estimate_degradation(laps)
 

@@ -10,21 +10,28 @@ class TyreEstimator:
         for compound in compounds:
             compound_laps = laps[laps["Compound"] == compound].copy()
 
-            if len(compound_laps) < 5:
+            if len(compound_laps) < 10:
                 continue
 
             compound_laps["LapSeconds"] = (compound_laps["LapTime"].dt.total_seconds())
             compound_laps = compound_laps.dropna(subset=["LapSeconds"])
+            slopes = []
 
-            if len(compound_laps) < 15:
-                continue
+            # this calculate degradation per stint
+            for _, data in compound_laps.groupby("Stint"):
+                if len(data) < 5:
+                    continue
 
-            compound_laps["TyreAge"] = (compound_laps.groupby("Stint").cumcount())
-            x = compound_laps["TyreAge"].values
-            y = compound_laps["LapSeconds"].values
+                data = data.copy()
+                data["TyreAge"] = range(len(data))
+                x = data["TyreAge"].values
+                y = data["LapSeconds"].values
+                slope, _ = np.polyfit(x, y, 1)
+                slopes.append(slope)
 
-            # using linear regression to make an accurate estimation
-            slope, intercept = np.polyfit(x, y, 1)
-            degradation[compound] = max(slope, 0) 
+            if slopes:
+
+                # using this averages only realistic degradation
+                degradation[compound] = round(float(np.clip(np.mean(slopes), 0.005, 0.12)), 4)
 
         return degradation
