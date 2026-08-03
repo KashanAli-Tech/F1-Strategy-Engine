@@ -9,7 +9,7 @@ from src.data.calibrator import ParameterCalibrator
 from src.data.tyre_estimator import TyreEstimator
 from src.data.historical_loader import HistoricalLoader
 from src.backtesting.backtester import Backtester
-from src.backtesting.backtesting_evaluator import BackTestedStrategyEvaluator
+from configs.simulation_config import YEARS
 
 if __name__ == "__main__":
 
@@ -27,8 +27,7 @@ if __name__ == "__main__":
 
 
     historical_loader = HistoricalLoader()
-
-    laps = historical_loader.load(years=[2022, 2023, 2024],
+    laps = historical_loader.load(years=YEARS,
         race_name="British Grand Prix",
         driver="VER")
     tyre_estimator = TyreEstimator()
@@ -100,12 +99,35 @@ if __name__ == "__main__":
     print(f"Variation: {result['variation']:.3f}")
     print(f"Consistency Score: {result['consistency_score']:.3f}")
 
-    backtester = Backtester(historical_loader, monte_carlo, optimiser)
-    results = backtester.run_race(year=2024, event="British Grand Prix")
-    evaluator = BackTestedStrategyEvaluator()
-    evaluation = evaluator.evaluate(results)
-    print("\nBacktest Results")
-    print(f"Predicted Strategy: {evaluation['predicted_strategy']}")
-    print(f"Closest Actual Strategy: {evaluation['actual_closest']}")
-    print(f"Prediction Error: {evaluation['error']} seconds")
-    
+    # backtesting across seasons
+    print("Running Historical Backtest")
+
+    historical_years = {year: laps[laps["Year"] == year].copy() for year in YEARS}
+    backtester = Backtester()
+
+    predicted_result = None
+    for strategy, result in results:
+        if strategy == best_strategy:
+            predicted_result = result
+            break
+
+
+    for year, historical_laps in historical_years.items():
+
+        print(f"British Grand Prix {year}")
+        backtest_result = backtester.evaluate(strategy=best_strategy, historical_laps=historical_laps, predicted_result=predicted_result)
+        print("Strategy:", optimiser.evaluator.format_strategy(backtest_result["strategy"]))
+        print(f"Predicted Time: " f"{backtest_result['predicted_time']:.3f}s")
+        print(f"Actual Time: " f"{backtest_result['actual_time']:.3f}s")
+        print(f"Time Error: " f"{backtest_result['time_error']:.3f}s")
+        print("\nPit Strategy")
+        print("Predicted Pit Laps:", backtest_result["predicted_pit_laps"])
+        print("Actual Pit Laps:", backtest_result["actual_pit_laps"])
+        print("Pit Window Error:", backtest_result["pit_window_error"], "laps")
+        print("\nCompound Strategy")
+        print("Predicted Compounds:", backtest_result["predicted_compounds"])
+        print("Actual Compounds:", backtest_result["actual_compounds"])
+        print("Compound Accuracy:", backtest_result["compound_accuracy"])
+        print("\nRisk Model")
+        print(f"Predicted Variation: " f"{backtest_result['predicted_variation']:.3f}")
+        print(f"Actual Variation: " f"{backtest_result['actual_variation']:.3f}")
