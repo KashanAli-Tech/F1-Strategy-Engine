@@ -19,24 +19,23 @@ class Backtester:
 
         return round(np.mean(errors),2)
 
-    def calculate_compound_accuracy(self, predicted_compounds, actual_compounds):
+    def calculate_compound_match(self, predicted_compounds, actual_compounds):
 
-        predicted = set(compound.upper() for compound in predicted_compounds)
-        actual = set(compound.upper() for compound in actual_compounds)
+        predicted = [c.upper() for c in predicted_compounds]
+        actual = [c.upper() for c in actual_compounds]
 
-        if len(predicted) == 0:
-            return 0
+        matches = sum(1 for compound in predicted if compound in actual)
 
-        matches = predicted.intersection(actual)
-        return round(len(matches) / len(predicted) * 100, 2)
-
+        return {
+            "matches": matches,
+            "total": len(actual)
+        }
     def extract_actual_pit_laps(self, historical_laps):
 
-        if "PitInTime" not in historical_laps.columns:
+        if "ActualPitLaps" not in historical_laps.columns:
             return []
 
-        pit_laps = historical_laps[historical_laps["PitInTime"].notna()]["LapNumber"].tolist()
-        return pit_laps
+        return historical_laps["ActualPitLaps"].iloc[0]
 
     def extract_actual_compounds(self, historical_laps):
 
@@ -48,10 +47,12 @@ class Backtester:
 
     def calculate_actual_variation(self, historical_laps):
 
-        if "LapTimeSeconds" not in historical_laps.columns:
+        lap_times = historical_laps["LapTime"].dt.total_seconds().dropna()
+
+        if len(lap_times) < 2:
             return 0
 
-        return round(historical_laps["LapTimeSeconds"].std(), 3)
+        return round(float(lap_times.std()), 3)
 
     def evaluate(self, strategy, historical_laps, predicted_result):
 
@@ -64,22 +65,12 @@ class Backtester:
         actual_pit_laps = self.extract_actual_pit_laps(historical_laps)
         actual_compounds = self.extract_actual_compounds(historical_laps)
         pit_window_error = self.calculate_pit_window_error(predicted_pit_laps, actual_pit_laps)
-        compound_accuracy = self.calculate_compound_accuracy(predicted_compounds, actual_compounds)
-        actual_variation = self.calculate_actual_variation(historical_laps)
-        predicted_time = predicted_result["average_time"]
-
-        # keep current placeholder
-        actual_time = historical_laps["LapTime"].dt.total_seconds().sum()
+        compound_match = self.calculate_compound_match(predicted_compounds, actual_compounds)
 
         return {"strategy": strategy,
-            "predicted_time": predicted_time,
-            "actual_time": actual_time,
-            "time_error": abs(predicted_time - actual_time),
             "predicted_pit_laps": predicted_pit_laps,
             "actual_pit_laps": actual_pit_laps,
             "pit_window_error": pit_window_error,
             "predicted_compounds": predicted_compounds,
             "actual_compounds": actual_compounds,
-            "compound_accuracy": compound_accuracy,
-            "predicted_variation": predicted_result["variation"],
-            "actual_variation": actual_variation}
+            "compound_match": compound_match}

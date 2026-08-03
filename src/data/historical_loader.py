@@ -17,9 +17,9 @@ class HistoricalLoader:
 
             print(f"Loading {race_name} {year}")
             session = self.loader.load_race(year, race_name)
-            laps = self.extractor.extract_driver_laps(session, driver)
-            laps = laps.copy()
+            laps, pit_laps = self.extractor.extract_driver_laps(session, driver)
             laps.loc[:, "Year"] = year
+            laps["ActualPitLaps"] = [pit_laps] * len(laps)
             all_laps.append(laps)
 
         combined_laps = pd.concat(all_laps, ignore_index=True)

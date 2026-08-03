@@ -100,7 +100,7 @@ if __name__ == "__main__":
     print(f"Consistency Score: {result['consistency_score']:.3f}")
 
     # backtesting across seasons
-    print("Running Historical Backtest")
+    print("\nRunning Historical Backtest")
 
     historical_years = {year: laps[laps["Year"] == year].copy() for year in YEARS}
     backtester = Backtester()
@@ -117,17 +117,13 @@ if __name__ == "__main__":
         print(f"British Grand Prix {year}")
         backtest_result = backtester.evaluate(strategy=best_strategy, historical_laps=historical_laps, predicted_result=predicted_result)
         print("Strategy:", optimiser.evaluator.format_strategy(backtest_result["strategy"]))
-        print(f"Predicted Time: " f"{backtest_result['predicted_time']:.3f}s")
-        print(f"Actual Time: " f"{backtest_result['actual_time']:.3f}s")
-        print(f"Time Error: " f"{backtest_result['time_error']:.3f}s")
         print("\nPit Strategy")
         print("Predicted Pit Laps:", backtest_result["predicted_pit_laps"])
         print("Actual Pit Laps:", backtest_result["actual_pit_laps"])
         print("Pit Window Error:", backtest_result["pit_window_error"], "laps")
         print("\nCompound Strategy")
         print("Predicted Compounds:", backtest_result["predicted_compounds"])
-        print("Actual Compounds:", backtest_result["actual_compounds"])
-        print("Compound Accuracy:", backtest_result["compound_accuracy"])
-        print("\nRisk Model")
-        print(f"Predicted Variation: " f"{backtest_result['predicted_variation']:.3f}")
-        print(f"Actual Variation: " f"{backtest_result['actual_variation']:.3f}")
+        print("Historical Strategy:")
+        print(" → ".join(backtest_result["actual_compounds"]))
+        print("Compound Match:", f"{backtest_result['compound_match']['matches']} / {backtest_result['compound_match']['total']} compounds")
+        
