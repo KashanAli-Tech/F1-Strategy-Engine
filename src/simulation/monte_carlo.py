@@ -33,4 +33,5 @@ class MonteCarloSimulator:
 
         risk_analyser = RiskAnalyser()
         analysis = risk_analyser.analyse(results)
+        analysis["race_times"] = results
         return analysis
