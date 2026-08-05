@@ -1,5 +1,7 @@
 import sys
 from pathlib import Path
+import streamlit as st
+
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
 
@@ -16,6 +18,7 @@ from src.data.calibrator import ParameterCalibrator
 from src.strategy.strategy_optimiser import StrategyOptimiser
 from configs.simulation_config import YEARS
 
+@st.cache_data(show_spinner=False)
 def run_strategy_engine():
 
     driver = Driver(name="Max Verstappen",
@@ -45,4 +48,9 @@ def run_strategy_engine():
 
     optimiser = StrategyOptimiser(degradation)
     best_strategy, results = optimiser.optimise(driver, track)
-    return best_strategy, results
+    return {"driver": driver,
+    "track": track,
+    "laps": laps,
+    "degradation": degradation,
+    "best_strategy": best_strategy,
+    "results": results}

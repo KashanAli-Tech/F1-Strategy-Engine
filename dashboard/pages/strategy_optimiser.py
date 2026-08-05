@@ -9,7 +9,11 @@ def show():
     st.divider()
 
     with st.spinner("Running strategy optimisation..."):
-        best_strategy, results = run_strategy_engine()
+        engine = run_strategy_engine()
+
+    best_strategy = engine["best_strategy"]
+    results = engine["results"]
+
 
 
     best_result = None
