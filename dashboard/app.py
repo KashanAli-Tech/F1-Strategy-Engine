@@ -1,6 +1,6 @@
 import streamlit as st
 
-from pages import home, strategy_optimiser, monte_carlo, validation, tyre_analysis, calibration
+from pages import home, strategy_optimiser, monte_carlo, tyre_analysis, calibration, backtesting
 
 st.set_page_config(page_title="F1 Probabilistic Strategy Optimiser", page_icon="🏎️", layout="wide")
 
@@ -10,7 +10,7 @@ def main():
         ["Home",
         "Strategy Optimiser",
         "Monte Carlo Results",
-        "Historical Validation",
+        "Backtester",
         "Tyre Degradation",
         "Track Calibration"])
 
@@ -23,8 +23,8 @@ def main():
     elif page == "Monte Carlo Results":
         monte_carlo.show()
 
-    elif page == "Historical Validation":
-        validation.show()
+    elif page == "Backtester":
+        backtesting.show()
 
     elif page == "Tyre Degradation":
         tyre_analysis.show()
