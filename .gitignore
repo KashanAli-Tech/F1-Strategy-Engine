@@ -9,3 +9,10 @@ __pycache__/
 
 .env
 
+cache/
+*.sqlite
+*.db
+*.ff1pkl
+
+
+
