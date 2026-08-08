@@ -11,7 +11,7 @@ def show():
     st.divider()
 
     with st.spinner("Running simulations..."):
-        engine = run_strategy_engine()
+        engine = run_strategy_engine(st.session_state["race_name"], st.session_state["years"], st.session_state["driver_code"])
 
     best_strategy = engine["best_strategy"]
     results = engine["results"]

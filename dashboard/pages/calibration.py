@@ -12,7 +12,7 @@ def show():
     This ensures the race simulator is parameterised using observed performance rather than fixed assumptions.""")
     st.divider()
 
-    engine = run_strategy_engine()
+    engine = run_strategy_engine(st.session_state["race_name"], st.session_state["years"], st.session_state["driver_code"])
 
     track = engine["track"]
     laps = engine["laps"]

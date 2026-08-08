@@ -1,3 +1,5 @@
+import streamlit as st
+
 from src.backtesting.backtester import Backtester
 from utils.engine_runner import run_strategy_engine
 from src.strategy.strategy_evaluator import StrategyEvaluator
@@ -5,7 +7,7 @@ from src.strategy.strategy_evaluator import StrategyEvaluator
 from configs.simulation_config import YEARS
 
 def Backtesting():
-    engine = run_strategy_engine()
+    engine = run_strategy_engine(st.session_state["race_name"], st.session_state["years"], st.session_state["driver_code"])
     best_strategy = engine["best_strategy"]
     results = engine["results"]
     laps = engine["laps"]

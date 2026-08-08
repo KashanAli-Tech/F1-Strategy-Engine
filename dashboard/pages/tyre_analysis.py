@@ -10,7 +10,7 @@ def show():
     Degradation represents the expected lap time loss as tyre age increases during a stint.""")
     st.divider()
 
-    engine = run_strategy_engine()
+    engine = run_strategy_engine(st.session_state["race_name"], st.session_state["years"], st.session_state["driver_code"])
     degradation = engine["degradation"]
     st.subheader("Estimated Degradation Rates")
     degradation_df = pd.DataFrame({"Compound": list(degradation.keys()), "Degradation (seconds/lap)": list(degradation.values())})
