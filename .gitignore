@@ -14,5 +14,4 @@ cache/
 *.db
 *.ff1pkl
 
-
-
+fastf1_http_cache.sqlite

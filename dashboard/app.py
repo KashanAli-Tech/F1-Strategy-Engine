@@ -1,11 +1,7 @@
 import streamlit as st
 
-from pages import home, strategy_optimiser, monte_carlo, tyre_analysis, calibration, backtesting
-from utils.race_config import (
-    get_races,
-    get_available_years,
-    get_drivers
-)
+from pages import home, strategy_optimiser, monte_carlo, tyre_analysis, calibration, backtesting, strategy_input
+from utils.race_config import (get_races, get_available_years, get_drivers)
 
 st.set_page_config(page_title="F1 Probabilistic Strategy Optimiser", page_icon="🏎️", layout="wide")
 
@@ -39,6 +35,7 @@ def main():
 
     page = st.sidebar.radio("Navigation",
         ["Home",
+         "Strategy Input",
         "Strategy Optimiser",
         "Monte Carlo Results",
         "Backtester",
@@ -48,6 +45,9 @@ def main():
     
     if page == "Home":
         home.show()
+
+    elif page == "Strategy Input":
+        strategy_input.show()
 
     elif page == "Strategy Optimiser":
         strategy_optimiser.show()
