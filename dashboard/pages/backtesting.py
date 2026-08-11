@@ -6,6 +6,10 @@ from dashboard.utils.backtest_runner import Backtesting
 
 def show():
 
+    if not st.session_state["race_name"]:
+        st.warning("Configure a race in Strategy Input before opening this page.")
+        st.stop()
+
     st.title("Backtesting")
     st.write("""This backtests the predicted strategy from the optimisation engine against historical race strategies.""")
 

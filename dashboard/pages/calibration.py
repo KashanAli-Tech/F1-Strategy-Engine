@@ -6,6 +6,11 @@ from src.data.parameter_estimator import ParameterEstimator
 
 
 def show():
+    
+    if not st.session_state["race_name"]:
+            st.warning("Configure a race in Strategy Input before opening this page.")
+            st.stop()
+
     st.title("Track Calibration")
 
     st.write("""Before race strategy optimisation, the simulation environment is calibrated using historical Formula 1 race data.

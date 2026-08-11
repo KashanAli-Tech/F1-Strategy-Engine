@@ -1,4 +1,4 @@
-import fastf1#
+import fastf1
 from configs.dashboard_config import CURRENT_DRIVERS
 
 

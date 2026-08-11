@@ -5,6 +5,11 @@ import plotly.express as px
 from utils.engine_runner import run_strategy_engine
 
 def show():
+    
+    if not st.session_state["race_name"]:
+            st.warning("Configure a race in Strategy Input before opening this page.")
+            st.stop()
+
     st.title("Tyre Degradation Analysis")
     st.write("""This page presents tyre degradation estimates calculated from historical Formula 1 lap data.
     Degradation represents the expected lap time loss as tyre age increases during a stint.""")
