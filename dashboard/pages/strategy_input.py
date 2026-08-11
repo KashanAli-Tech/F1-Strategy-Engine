@@ -10,25 +10,46 @@ def show():
     st.write("""Welcome, strategist. Configure the race, driver and strategy parameters before running the probabilistic strategy engine.""")
     st.divider()
 
-    st.header("Race Selection")
+    st.header("Race Prediction")
 
-    selected_year = st.selectbox("Select Season", [2022, 2023, 2024])
-    races = get_races(selected_year)
+    prediction_year = st.selectbox("Prediction Season",
+        [2022, 2023, 2024, 2025, 2026], index=4)
+
+    races = get_races(prediction_year)
+
+    if not races:
+        st.error("No races available for this season.")
+        return
+
     selected_race = st.selectbox("Grand Prix", races)
     st.divider()
 
-    st.header("Calibration Years")
+    st.header("Historical Calibration")
+    available_calibration_years = get_available_years(selected_race)
 
-    available_years = get_available_years(selected_race)
-    selected_years = st.multiselect("Historical Years", available_years, default=available_years)
+    calibration_years = [year for year in available_calibration_years if year < prediction_year]
+
+    if not calibration_years:
+        st.error(f"No historical data is available for {selected_race} "
+            f"before {prediction_year}.")
+        return
+
+    selected_years = st.multiselect("Calibration Seasons",
+        calibration_years,
+        default=calibration_years,
+        help="Historical seasons used to estimate tyre degradation, pace and track characteristics.")
+
     st.divider()
 
     st.header("Driver")
+    drivers = get_drivers(prediction_year, selected_race)
 
-    drivers = get_drivers(selected_year, selected_race)
+    if not drivers:
+        st.error("No drivers were found for this race.")
+        return
+
     selected_driver_name = st.selectbox("Driver", list(drivers.keys()))
     selected_driver = drivers[selected_driver_name]
-    st.divider()
 
     st.header("Driver Parameters")
     col1, col2 = st.columns(2)
@@ -88,7 +109,7 @@ def show():
         st.metric("Grand Prix", selected_race)
 
     with col2:
-        st.metric("Season", selected_year)
+        st.metric("Season", prediction_year)
 
     with col3:
         st.metric("Driver", selected_driver)
@@ -96,17 +117,21 @@ def show():
     st.divider()
 
     if st.button("Run Strategy Analysis",
-        type="primary",
-        use_container_width=True):
+    type="primary",
+    use_container_width=True):
+
+        if not selected_years:
+            st.error("Select at least one calibration season.")
+            return
 
         if not preferred_compounds:
             st.error("Select at least one tyre compound.")
             return
 
+        st.session_state["prediction_year"] = prediction_year
         st.session_state["race_name"] = selected_race
-        st.session_state["years"] = available_years
+        st.session_state["years"] = selected_years
         st.session_state["driver_code"] = selected_driver
-        st.session_state["year"] = selected_year
 
         st.session_state["aggressiveness"] = aggressiveness
         st.session_state["consistency"] = consistency
@@ -119,8 +144,8 @@ def show():
         st.session_state["run_analysis"] = True
 
         st.success(f"Configuration ready: "
-            f"{selected_driver} — "
-            f"{selected_race} {selected_year}")
+            f"{selected_driver_name} — "
+            f"{selected_race} {prediction_year}")
 
-        st.info("Your race configuration has been saved. "
-            "The strategy engine can now use these parameters.")
+        st.info(f"Using {', '.join(map(str, selected_years))} "
+            f"for historical calibration.")

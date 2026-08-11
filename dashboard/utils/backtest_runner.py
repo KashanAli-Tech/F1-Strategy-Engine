@@ -33,8 +33,7 @@ def Backtesting():
     for year, season_laps in historical_laps.items():
 
         if season_laps.empty:
-            raise ValueError(f"No historical lap data found for "
-                f"{race_name} in {year} for driver {driver_code}.")
+            continue
 
         result = backtester.evaluate(strategy=best_strategy,
             historical_laps=season_laps,
@@ -50,5 +49,8 @@ def Backtesting():
             "Compound Match":
                 f"{result['compound_match']['matches']} / "
                 f"{result['compound_match']['total']}"})
+
+    if not backtest_results:
+        raise ValueError(f"No usable historical data was found for {driver_code} at {race_name}. Backtesting cannot be performed.")
 
     return backtest_results
