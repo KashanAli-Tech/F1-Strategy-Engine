@@ -22,18 +22,28 @@ def main():
 
     st.sidebar.title("F1 Strategy Engine")
 
-    page = st.sidebar.radio(
+    pages = [
+        "Home",
+        "Strategy Input",
+        "Strategy Optimiser",
+        "Monte Carlo Results",
+        "Backtester",
+        "Tyre Degradation",
+        "Track Calibration"
+    ]
+
+    if "current_page" not in st.session_state:
+        st.session_state["current_page"] = "Home"
+
+    selected_page = st.sidebar.radio(
         "Navigation",
-        [
-            "Home",
-            "Strategy Input",
-            "Strategy Optimiser",
-            "Monte Carlo Results",
-            "Backtester",
-            "Tyre Degradation",
-            "Track Calibration",
-        ],
+        pages,
+        index=pages.index(st.session_state["current_page"])
     )
+
+    st.session_state["current_page"] = selected_page
+
+    page = st.session_state["current_page"]
 
     if page == "Home":
         home.show()
