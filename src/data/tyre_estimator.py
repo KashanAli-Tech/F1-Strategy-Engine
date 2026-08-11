@@ -8,7 +8,7 @@ class TyreEstimator:
         compounds = ["SOFT", "MEDIUM", "HARD"]
 
         for compound in compounds:
-            compound_laps = laps[laps["Compound"] == compound].copy()
+            compound_laps = laps[laps["Compound"].str.upper() == compound].copy()
 
             if len(compound_laps) < 10:
                 continue
@@ -17,21 +17,41 @@ class TyreEstimator:
             compound_laps = compound_laps.dropna(subset=["LapSeconds"])
             slopes = []
 
-            # this calculate degradation per stint
-            for _, data in compound_laps.groupby("Stint"):
-                if len(data) < 5:
+            for _, stint in compound_laps.groupby("Stint"):
+                if len(stint) < 5:
                     continue
 
-                data = data.copy()
-                data["TyreAge"] = range(len(data))
-                x = data["TyreAge"].values
-                y = data["LapSeconds"].values
+                stint = stint.copy()
+
+                # Remove the first lap of a stint because out-laps are often significantly slower.
+                if len(stint) > 6:
+                    stint = stint.iloc[1:]
+
+                stint["TyreAge"] = np.arange(len(stint))
+
+                x = stint["TyreAge"].to_numpy()
+                y = stint["LapSeconds"].to_numpy()
+
+                # Remove obvious lap-time outliers
+                median = np.median(y)
+                mad = np.median(np.abs(y - median))
+
+                if mad > 0:
+                    mask = np.abs(y - median) < 3 * mad
+                    x = x[mask]
+                    y = y[mask]
+
+                if len(x) < 5:
+                    continue
+
                 slope, _ = np.polyfit(x, y, 1)
-                slopes.append(slope)
+
+                # Ignore slopes which imply tyres getting faster as they age.
+                if slope > 0:
+                    slopes.append(float(slope))
 
             if slopes:
 
-                # using this averages only realistic degradation
-                degradation[compound] = round(float(np.clip(np.mean(slopes), 0.005, 0.12)), 4)
+                degradation[compound] = round(float(np.median(slopes)), 4)
 
         return degradation
