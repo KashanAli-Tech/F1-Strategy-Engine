@@ -1,6 +1,14 @@
 import streamlit as st
 
-from pages import home, strategy_input, strategy_optimiser, monte_carlo, backtesting, tyre_analysis, calibration
+from pages import (
+    home,
+    strategy_input,
+    strategy_optimiser,
+    monte_carlo,
+    backtesting,
+    tyre_analysis,
+    calibration,
+)
 
 
 st.set_page_config(
@@ -57,6 +65,12 @@ pages = [
         url_path="calibration",
     ),
 ]
+
+
+page = st.navigation(
+    pages,
+    position="hidden",
+)
 
 
 st.html("""
@@ -200,40 +214,13 @@ with st.sidebar:
     </div>
     """)
 
-    st.page_link(
-        pages[0],
-        label="Home",
-    )
-
-    st.page_link(
-        pages[1],
-        label="Strategy Input",
-    )
-
-    st.page_link(
-        pages[2],
-        label="Strategy Optimiser",
-    )
-
-    st.page_link(
-        pages[3],
-        label="Monte Carlo Results",
-    )
-
-    st.page_link(
-        pages[4],
-        label="Backtester",
-    )
-
-    st.page_link(
-        pages[5],
-        label="Tyre Degradation",
-    )
-
-    st.page_link(
-        pages[6],
-        label="Track Calibration",
-    )
+    st.page_link(pages[0], label="Home")
+    st.page_link(pages[1], label="Strategy Input")
+    st.page_link(pages[2], label="Strategy Optimiser")
+    st.page_link(pages[3], label="Monte Carlo Results")
+    st.page_link(pages[4], label="Backtester")
+    st.page_link(pages[5], label="Tyre Degradation")
+    st.page_link(pages[6], label="Track Calibration")
 
     st.html("""
     <div class="sidebar-footer">
@@ -241,12 +228,6 @@ with st.sidebar:
         DATA&nbsp;&nbsp;&nbsp;&nbsp; <span>HISTORICAL F1</span>
     </div>
     """)
-
-
-page = st.navigation(
-    pages,
-    position="hidden",
-)
 
 
 page.run()
