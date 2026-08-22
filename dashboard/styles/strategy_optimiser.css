@@ -1,0 +1,328 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    --carbon: #0D0E12;
+    --panel: #13151A;
+    --white: #F2F3F5;
+    --muted: #8D929B;
+    --line: rgba(255,255,255,0.09);
+    --red: #E10600;
+}
+
+.optimiser-header {
+    padding: 55px 0 38px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.optimiser-kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    color: #666B74;
+    margin-bottom: 14px;
+}
+
+.optimiser-kicker span {
+    color: var(--red);
+}
+
+.optimiser-title {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+.optimiser-title span {
+    color: var(--red);
+}
+
+.optimiser-description {
+    max-width: 720px;
+    margin-top: 24px;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--muted);
+}
+
+.race-context {
+    margin-top: 28px;
+    padding: 12px 16px;
+    border-left: 2px solid var(--red);
+    background: rgba(255,255,255,0.025);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: #777C85;
+}
+
+.race-context strong {
+    color: var(--white);
+}
+
+.section {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.section-kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    color: #626771;
+    margin-bottom: 9px;
+}
+
+.section-title {
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.025em;
+    color: var(--white);
+    margin-bottom: 26px;
+}
+
+.strategy-panel {
+    position: relative;
+    padding: 32px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    overflow: hidden;
+}
+
+.strategy-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        );
+    background-size: 80px 100%;
+    pointer-events: none;
+}
+
+.strategy-label {
+    position: relative;
+    z-index: 2;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.13em;
+    color: #626771;
+}
+
+.strategy-status {
+    position: relative;
+    z-index: 2;
+    margin-top: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--red);
+}
+
+.strategy-track {
+    position: relative;
+    z-index: 2;
+    margin-top: 42px;
+    padding-bottom: 42px;
+}
+
+.track-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 55px;
+    height: 6px;
+    background: #292C32;
+}
+
+.track-stint {
+    position: absolute;
+    top: 55px;
+    height: 6px;
+}
+
+.track-stint.soft {
+    background: #E10600;
+}
+
+.track-stint.medium {
+    background: #F2F3F5;
+}
+
+.track-stint.hard {
+    background: #777C85;
+}
+
+.track-stint-label {
+    position: absolute;
+    top: 22px;
+    transform: translateX(-50%);
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--white);
+    white-space: nowrap;
+}
+
+.track-marker {
+    position: absolute;
+    top: 44px;
+    width: 16px;
+    height: 28px;
+    transform: translateX(-50%);
+}
+
+.track-marker::before {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 0;
+    width: 6px;
+    height: 18px;
+    background: var(--white);
+}
+
+.track-marker.pit::before {
+    background: var(--red);
+}
+
+.track-marker-label {
+    position: absolute;
+    top: 30px;
+    transform: translateX(-50%);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    color: #777C85;
+    white-space: nowrap;
+}
+
+.track-marker-label.pit-label {
+    color: var(--red);
+}
+
+.track-endpoints {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 78px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    color: #626771;
+}
+
+.strategy-summary {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    gap: 40px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+
+.strategy-summary-item {
+    font-family: "JetBrains Mono", monospace;
+}
+
+.strategy-summary-label {
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    color: #626771;
+}
+
+.strategy-summary-value {
+    margin-top: 5px;
+    font-size: 0.82rem;
+    color: var(--white);
+}
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+}
+
+.performance-item {
+    padding: 22px;
+    min-height: 105px;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(255,255,255,0.015);
+}
+
+.performance-label {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.59rem;
+    letter-spacing: 0.09em;
+    color: #626771;
+    text-transform: uppercase;
+}
+
+.performance-value {
+    margin-top: 13px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.comparison-note {
+    margin-bottom: 18px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.65rem;
+    color: #666B74;
+    letter-spacing: 0.04em;
+}
+
+.interpretation {
+    max-width: 850px;
+    padding: 25px 0;
+    font-family: "Chakra Petch", sans-serif;
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #A7ABB2;
+}
+
+.interpretation strong {
+    color: var(--white);
+}
+
+@media (max-width: 900px) {
+    .performance-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .strategy-panel {
+        padding: 22px;
+    }
+
+    .strategy-track {
+        overflow-x: auto;
+        min-width: 550px;
+    }
+
+    .strategy-summary {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 600px) {
+    .performance-grid {
+        grid-template-columns: 1fr;
+    }
+}
